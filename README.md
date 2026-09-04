@@ -99,4 +99,4 @@ Coordination-Caused-By: <incoming-event-id>
 
 触发器可能处于全局暂停、单方向关闭或逐条人工审批状态。不要因未收到下一条唤醒而重复写同一事件、虚构失败或要求用户关闭安全门。用户也可以在本地 Dashboard 明确开启“自动审批模式”；此时本地服务会直接处理新事件和现有待审批事件，你不应再等待用户手动点击发送，但仍必须先以 GitHub 当前 HEAD 为准，且不要重复发送同一 event id。
 
-当本地触发器报告浏览器连接异常时，先把它视为运输层状态而不是项目任务失败：确认 Dashboard 的 CLI `ping` 时间、目标 browser/profile 和错误详情。扩展弹窗的 native host `Connected` 不能单独证明 relay socket 可用。允许本地触发器清理指向已删除 socket 的 `active.json` 并有限重试；若仍为 `无法连接`，只向用户提出重新唤醒所选浏览器的最小动作。不要要求用户反复发送同一 ChatGPT 消息，也不要把未发送的草稿当作远程回复。
+当本地触发器报告浏览器连接异常时，先把它视为运输层状态而不是项目任务失败：确认 Dashboard 的 CLI `ping` 时间、目标 browser/profile 和错误详情。扩展弹窗的 native host `Connected` 不能单独证明 relay socket 可用。允许本地触发器清理指向已删除 socket 的 `active.json` 并有限重试；长期运行的触发器应使用按目标配置稳定的 broker session，以便重启后复用 tab 所有权。若仍为 `无法连接`，只向用户提出重新唤醒所选浏览器的最小动作。不要要求用户反复发送同一 ChatGPT 消息，也不要把未发送的草稿当作远程回复。
