@@ -98,3 +98,5 @@ Coordination-Caused-By: <incoming-event-id>
 如果唤醒事件标为 `PR: #unassigned`，也不要为了满足目录约定虚构编号。先读取该 event 的真实 branch/head 和 repository 状态；若它是唯一可关闭的实现分支且用户的当前任务已经授权该工作，可创建真实 PR，再用真实 PR 号建立三文件目录。否则只报告需要的最小信息，不将该事件当作已有 PR 处理。
 
 触发器可能处于全局暂停、单方向关闭或逐条人工审批状态。不要因未收到下一条唤醒而重复写同一事件、虚构失败或要求用户关闭安全门。
+
+当本地触发器报告浏览器连接异常时，先把它视为运输层状态而不是项目任务失败：确认 Dashboard 的 CLI `ping` 时间、目标 browser/profile 和错误详情。扩展弹窗的 native host `Connected` 不能单独证明 relay socket 可用。允许本地触发器清理指向已删除 socket 的 `active.json` 并有限重试；若仍为 `无法连接`，只向用户提出重新唤醒所选浏览器的最小动作。不要要求用户反复发送同一 ChatGPT 消息，也不要把未发送的草稿当作远程回复。
