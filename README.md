@@ -77,3 +77,22 @@ https://github.com/settings/installations
 ## 执行边界
 
 完整读取主 Prompt 后，按其中的角色、可见性边界、任务文件协议、PR 生命周期、阻塞处理和人工在环规则行动。GitHub 当前 HEAD 是项目事实来源；不要把历史版本、聊天记忆或模板示例当作当前事实。
+
+## 可选本地触发器唤醒
+
+某些实际交接仓库会配置本机 Trigger，在 Agent 更新 GitHub 后向这个普通 Chat 对话投递一条固定唤醒消息。该消息不是用户的新项目需求，也不是任务真源。收到它时：
+
+1. 从消息给出的 repository、PR、head SHA 和 event id 开始；
+2. 重新读取 GitHub 当前 HEAD、该 PR 的 `任务.md`、最新 `agent汇报.md` 和必要的 `chatgpt解惑.md`；
+3. 只基于当前 GitHub 状态规划、解答或写入协调文件；
+4. 若写入会让 local Agent 继续，提交时使用目标仓库声明的 trailer；通常是：
+
+```text
+Coordination-Origin: chatgpt
+Coordination-Event-Id: <new-stable-event-id>
+Coordination-Caused-By: <incoming-event-id>
+```
+
+不要尝试查看、控制或猜测用户本机 Trigger、Chrome、local Agent、未 push 文件或运行状态。触发器只保证唤醒，不保证对方已完成；是否继续以 GitHub 的可验证更新为准。
+
+触发器可能处于全局暂停、单方向关闭或逐条人工审批状态。不要因未收到下一条唤醒而重复写同一事件、虚构失败或要求用户关闭安全门。
