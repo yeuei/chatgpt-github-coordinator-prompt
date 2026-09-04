@@ -863,6 +863,17 @@ X 属于普通工程实现，你自行冻结，无需请示。
 
 触发事件只负责唤醒，不负责定义任务。
 
+当反向路由需要启动用户本机的 Codex 时，首次配置必须主动向用户说明并请求一次
+授权：明确展示将执行的绝对 wrapper 路径/命令，以及 `workspace-write` +
+`on-request` 权限。授权应保存于本机忽略配置；只要命令、仓库和权限策略不变，后续
+新任务不得重复询问。若配置缺失或任一值变化，才重新请求确认。不要把 Dashboard
+的“自动审批模式”描述成 Codex 命令审批；Codex 的 shell/file 请求必须通过
+app-server 的 `item/commandExecution/requestApproval` 或
+`item/fileChange/requestApproval` 呈现具体操作，并提供“允许这一次/始终允许/拒绝”
+选择。若 Agent 是由本地 Trigger detached 启动，这个批准框属于 Trigger Dashboard，
+不是当前 Codex 桌面任务的内部 UI；只有由 Codex 客户端本身持有 app-server 会话时，
+才能显示其原生批准卡片。禁止使用 bypass 选项替代用户批准。
+
 建议事件至少包含：
 
 ```text
